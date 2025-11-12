@@ -3,61 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teste do Amor 💘</title>
+  <title>Teste do Amor ❤️</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff4e50, #f9d423);
+      color: #fff;
       text-align: center;
-      background: linear-gradient(135deg, #ff5f6d, #ffc371);
-      color: white;
-      height: 100vh;
+      padding: 40px 20px;
       margin: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
-    input {
-      padding: 10px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 350px;
     }
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: white;
-      color: #ff5f6d;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ffe1e1;
-    }
+
     h1 {
-      margin-bottom: 20px;
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+
+    input {
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff3366;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100%;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #ff0055;
+      transform: scale(1.05);
+    }
+
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .heart {
+      font-size: 60px;
+      animation: pulse 1s infinite;
+      margin-top: 10px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .bar {
+      height: 20px;
+      background: white;
+      border-radius: 10px;
+      margin-top: 15px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: #ff3366;
+      width: 0;
+      transition: width 1s ease;
     }
   </style>
 </head>
 <body>
-  <h1>💘 Teste do Amor 💘</h1>
-  <input type="text" id="nome1" placeholder="Seu nome">
-  <input type="text" id="nome2" placeholder="Nome da pessoa">
-  <button onclick="calcular()">Calcular Amor ❤️</button>
-  <h2 id="resultado"></h2>
+  <div class="container">
+    <h1>💘 Teste do Amor 💘</h1>
+    <input type="text" id="name1" placeholder="Seu nome">
+    <input type="text" id="name2" placeholder="Nome da pessoa">
+    <button onclick="calcularAmor()">Ver resultado ❤️</button>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="result" id="result"></div>
+    <div class="heart" id="heart" style="display:none;">❤️</div>
+  </div>
 
   <script>
-    function calcular() {
-      const n1 = document.getElementById('nome1').value.trim();
-      const n2 = document.getElementById('nome2').value.trim();
-      if (!n1 || !n2) {
-        document.getElementById('resultado').innerText = 'Preencha os dois nomes!';
+    function calcularAmor() {
+      const nome1 = document.getElementById('name1').value.trim();
+      const nome2 = document.getElementById('name2').value.trim();
+      const result = document.getElementById('result');
+      const heart = document.getElementById('heart');
+      const fill = document.getElementById('fill');
+
+      if (!nome1 || !nome2) {
+        result.textContent = "Digite os dois nomes!";
+        heart.style.display = "none";
+        fill.style.width = "0";
         return;
       }
-      const amor = Math.floor(Math.random() * 101);
-      document.getElementById('resultado').innerText = `${n1} ❤️ ${n2} = ${amor}% de amor!`;
+
+      let seed = 0;
+      for (let i = 0; i < nome1.length; i++) seed += nome1.charCodeAt(i);
+      for (let j = 0; j < nome2.length; j++) seed += nome2.charCodeAt(j) * 2;
+      const porcentagem = seed % 101;
+
+      let msg = "";
+      if (porcentagem > 90) msg = "Casal perfeito! 💍";
+      else if (porcentagem > 70) msg = "Amor verdadeiro! 💖";
+      else if (porcentagem > 50) msg = "Tem futuro! 💕";
+      else if (porcentagem > 30) msg = "Pode tentar a sorte 😅";
+      else msg = "Melhor só amizade 😬";
+
+      result.textContent = `${porcentagem}% — ${msg}`;
+      fill.style.width = porcentagem + "%";
+      heart.style.display = "block";
     }
   </script>
+
+  <!-- Corações flutuando -->
+<div id="coracoes"></div>
+
+<script>
+function criarCoracao() {
+  const coracao = document.createElement("div");
+  coracao.classList.add("coracao");
+  coracao.style.left = Math.random() * 100 + "vw";
+  coracao.style.animationDuration = Math.random() * 2 + 3 + "s"; // duração aleatória
+  document.body.appendChild(coracao);
+
+  setTimeout(() => {
+    coracao.remove();
+  }, 5000);
+}
+
+setInterval(criarCoracao, 300);
+</script>
 </body>
 </html>
